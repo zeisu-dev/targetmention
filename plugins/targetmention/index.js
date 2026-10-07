@@ -26,11 +26,9 @@
                 .map(id => "<@" + id + ">")
                 .join(" ");
 
-            message.content =
-                "> # " + targets + " " + content;
+            message.content = "> # " + targets + " " + content;
         } else {
-            message.content =
-                "> # " + content;
+            message.content = "> # " + content;
         }
     });
 })();
