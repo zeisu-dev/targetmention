@@ -14,14 +14,14 @@
 
         const content = message.content;
 
-        // Lấy tất cả mention trong tin nhắn
+        // Không xử lý lại message đã được plugin xử lý
+        if (message.__targetMentionProcessed) return;
+
         const mentions = [...content.matchAll(/<@!?(\d+)>/g)];
 
-        // Nếu có mention → cập nhật danh sách target
         if (mentions.length > 0) {
             targetUserIds = [...new Set(mentions.map(m => m[1]))];
 
-            // Xóa mention khỏi nội dung gốc
             const cleanContent = content
                 .replace(/<@!?\d+>/g, "")
                 .replace(/\s+/g, " ")
@@ -31,16 +31,15 @@
                 .map(id => "<@" + id + ">")
                 .join(" ");
 
-            // 60% có =)), 40% không có
             const suffix = Math.random() < 0.6 ? " =))" : "";
 
             message.content =
                 "> # " + cleanContent + " " + targets + suffix;
 
+            message.__targetMentionProcessed = true;
             return;
         }
 
-        // Các tin nhắn sau tự động dùng target đã lưu
         if (targetUserIds.length > 0) {
             const targets = targetUserIds
                 .map(id => "<@" + id + ">")
@@ -50,9 +49,16 @@
 
             message.content =
                 "> # " + content + " " + targets + suffix;
-        } else {
-            // Chưa có target
-            const suffix = Math.random() < 0.6 ? " =))" : "";
 
-            message.content =
-               
+            message.__targetMentionProcessed = true;
+            return;
+        }
+
+        const suffix = Math.random() < 0.6 ? " =))" : "";
+
+        message.content =
+            "> # " + content + suffix;
+
+        message.__targetMentionProcessed = true;
+    });
+})();
