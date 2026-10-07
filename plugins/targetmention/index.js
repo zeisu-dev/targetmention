@@ -7,6 +7,32 @@
 
     let targetUserIds = [];
 
+    function getRandomSuffix() {
+        const random = Math.random();
+
+        if (random < 0.1) {
+            return " 🤣👈";
+        } else if (random < 0.2) {
+            return " 😂🙏";
+        } else if (random < 0.3) {
+            return " =))=))";
+        } else if (random < 0.4) {
+            return " 🤔";
+        } else if (random < 0.5) {
+            return " 🤪🫵";
+        } else if (random < 0.6) {
+            return " 😁";
+        } else if (random < 0.7) {
+            return " 😭";
+        } else if (random < 0.8) {
+            return " 🥺";
+        } else if (random < 0.9) {
+            return " 😅🙏";
+        } else {
+            return "";
+        }
+    }
+
     patcher.before("sendMessage", MessageActions, (args) => {
         const message = args?.[1];
 
@@ -37,7 +63,7 @@
             return;
         }
 
-        // Những tin nhắn sau tự động mention target đã lưu
+        // Các tin nhắn sau tự động mention target
         if (targetUserIds.length > 0) {
             const targets = targetUserIds
                 .map(id => "<@" + id + ">")
@@ -46,24 +72,9 @@
             message.content =
                 "> # " + content + " " + targets + getRandomSuffix();
         } else {
+            // Chưa có target
             message.content =
                 "> # " + content + getRandomSuffix();
         }
     });
-
-    function getRandomSuffix() {
-        const random = Math.random();
-
-        if (random < 0.2) {
-            return " =))";
-        } else if (random < 0.4) {
-            return " 🤣";
-        } else if (random < 0.6) {
-            return " 😭";
-        } else if (random < 0.8) {
-            return " 😁";
-        } else {
-            return "";
-        }
-    }
 })();
