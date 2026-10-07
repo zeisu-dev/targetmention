@@ -14,14 +14,14 @@
 
         const content = message.content;
 
-        // Không xử lý lại message đã được plugin xử lý
-        if (message.__targetMentionProcessed) return;
-
+        // Tìm tất cả mention trong tin nhắn
         const mentions = [...content.matchAll(/<@!?(\d+)>/g)];
 
+        // Nếu có mention → cập nhật target
         if (mentions.length > 0) {
             targetUserIds = [...new Set(mentions.map(m => m[1]))];
 
+            // Xóa mention khỏi nội dung gốc
             const cleanContent = content
                 .replace(/<@!?\d+>/g, "")
                 .replace(/\s+/g, " ")
@@ -31,34 +31,39 @@
                 .map(id => "<@" + id + ">")
                 .join(" ");
 
-            const suffix = Math.random() < 0.6 ? " =))" : "";
-
             message.content =
-                "> # " + cleanContent + " " + targets + suffix;
+                "> # " + cleanContent + " " + targets + getRandomSuffix();
 
-            message.__targetMentionProcessed = true;
             return;
         }
 
+        // Những tin nhắn sau tự động mention target đã lưu
         if (targetUserIds.length > 0) {
             const targets = targetUserIds
                 .map(id => "<@" + id + ">")
                 .join(" ");
 
-            const suffix = Math.random() < 0.6 ? " =))" : "";
-
             message.content =
-                "> # " + content + " " + targets + suffix;
-
-            message.__targetMentionProcessed = true;
-            return;
+                "> # " + content + " " + targets + getRandomSuffix();
+        } else {
+            message.content =
+                "> # " + content + getRandomSuffix();
         }
-
-        const suffix = Math.random() < 0.6 ? " =))" : "";
-
-        message.content =
-            "> # " + content + suffix;
-
-        message.__targetMentionProcessed = true;
     });
+
+    function getRandomSuffix() {
+        const random = Math.random();
+
+        if (random < 0.2) {
+            return " =))";
+        } else if (random < 0.4) {
+            return " 🤣";
+        } else if (random < 0.6) {
+            return " 😭";
+        } else if (random < 0.8) {
+            return " 😁";
+        } else {
+            return "";
+        }
+    }
 })();
