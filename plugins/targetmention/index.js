@@ -28,8 +28,10 @@
                 .map(id => "<@" + id + ">")
                 .join(" ");
 
+            const suffix = Math.random() < 0.7 ? " =))" : "";
+
             message.content =
-                "> # " + cleanContent + " " + targets + " =))";
+                "> # " + cleanContent + " " + targets + suffix;
 
             return;
         }
@@ -39,10 +41,15 @@
                 .map(id => "<@" + id + ">")
                 .join(" ");
 
+            const suffix = Math.random() < 0.7 ? " =))" : "";
+
             message.content =
-                "> # " + content + " " + targets + " =))";
+                "> # " + content + " " + targets + suffix;
         } else {
-            message.content = "> # " + content + " =))";
+            const suffix = Math.random() < 0.7 ? " =))" : "";
+
+            message.content =
+                "> # " + content + suffix;
         }
     });
 })();
