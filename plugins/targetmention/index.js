@@ -14,6 +14,7 @@
 
         const content = message.content;
 
+        // Nếu có mention → cập nhật target
         const mentions = [...content.matchAll(/<@!?(\d+)>/g)];
 
         if (mentions.length > 0) {
@@ -21,12 +22,13 @@
             return;
         }
 
+        // Các tin nhắn sau: > # ở đầu, mention ở cuối
         if (targetUserIds.length > 0) {
             const targets = targetUserIds
                 .map(id => "<@" + id + ">")
                 .join(" ");
 
-            message.content = "> # " + targets + " " + content;
+            message.content = "> # " + content + " " + targets;
         } else {
             message.content = "> # " + content;
         }
