@@ -1,0 +1,11 @@
+{
+  "name": "targetmention",
+  "description": "mention everyone who u want",
+  "authors": [
+    {
+      "name": "zeisu"
+    }
+  ],
+  "main": "index.js",
+  "hash": "e3dc636c4c3f3535"
+}
