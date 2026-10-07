@@ -16,7 +16,6 @@
 
         const mentions = [...content.matchAll(/<@!?(\d+)>/g)];
 
-        // Có mention → lưu target
         if (mentions.length > 0) {
             targetUserIds = [...new Set(mentions.map(m => m[1]))];
 
@@ -29,26 +28,21 @@
                 .map(id => "<@" + id + ">")
                 .join(" ");
 
-            const suffix = Math.random() < 0.5 ? " =))" : "";
-
             message.content =
-                "> # " + cleanContent + " " + targets + suffix;
+                "> # " + cleanContent + " " + targets + " =))";
 
             return;
         }
 
-        // Những tin nhắn sau
         if (targetUserIds.length > 0) {
             const targets = targetUserIds
                 .map(id => "<@" + id + ">")
                 .join(" ");
 
-            const suffix = Math.random() < 0.5 ? " =))" : "";
-
             message.content =
-                "> # " + content + " " + targets + suffix;
+                "> # " + content + " " + targets + " =))";
         } else {
-            message.content = "> # " + content;
+            message.content = "> # " + content + " =))";
         }
     });
 })();
