@@ -14,7 +14,6 @@
 
         const content = message.content;
 
-        // Có mention → lưu người đó làm target
         const mention = content.match(/<@!?(\d+)>/);
 
         if (mention) {
@@ -22,10 +21,11 @@
             return;
         }
 
-        // Các tin nhắn sau → tự động mention target
         if (targetUserId) {
             message.content =
-                "# <@" + targetUserId + "> " + content;
+                "> # <@" + targetUserId + "> " + content + " 😂";
+        } else {
+            message.content = "> # " + content + " 😂";
         }
     });
 })();
