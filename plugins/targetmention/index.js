@@ -5,7 +5,7 @@
 
     if (!MessageActions?.sendMessage) return;
 
-    let targetUserId = null;
+    let targetUserIds = [];
 
     patcher.before("sendMessage", MessageActions, (args) => {
         const message = args?.[1];
@@ -14,18 +14,24 @@
 
         const content = message.content;
 
-        const mention = content.match(/<@!?(\d+)>/);
+        // Lấy tất cả user ID được mention
+        const mentions = [...content.matchAll(/<@!?(\d+)>/g)];
 
-        if (mention) {
-            targetUserId = mention[1];
+        if (mentions.length > 0) {
+            targetUserIds = [...new Set(mentions.map(m => m[1]))];
             return;
         }
 
-        if (targetUserId) {
+        if (targetUserIds.length > 0) {
+            const targets = targetUserIds
+                .map(id => "<@" + id + ">")
+                .join(" ");
+
             message.content =
-                "> # <@" + targetUserId + "> " + content + " 😂";
+                "> # " + targets + " " + content + " 😂";
         } else {
-            message.content = "> # " + content + " 😂";
+            message.content =
+                "> # " + content + " 😂";
         }
     });
 })();
