@@ -16,7 +16,7 @@
 
         const mentions = [...content.matchAll(/<@!?(\d+)>/g)];
 
-        // Có mention → lưu target và bỏ mention khỏi nội dung
+        // Có mention → lưu target
         if (mentions.length > 0) {
             targetUserIds = [...new Set(mentions.map(m => m[1]))];
 
@@ -25,14 +25,14 @@
                 .replace(/\s+/g, " ")
                 .trim();
 
-            if (targetUserIds.length > 0) {
-                const targets = targetUserIds
-                    .map(id => "<@" + id + ">")
-                    .join(" ");
+            const targets = targetUserIds
+                .map(id => "<@" + id + ">")
+                .join(" ");
 
-                message.content =
-                    "> # " + cleanContent + " " + targets;
-            }
+            const suffix = Math.random() < 0.5 ? " =))" : "";
+
+            message.content =
+                "> # " + cleanContent + " " + targets + suffix;
 
             return;
         }
@@ -43,8 +43,10 @@
                 .map(id => "<@" + id + ">")
                 .join(" ");
 
+            const suffix = Math.random() < 0.5 ? " =))" : "";
+
             message.content =
-                "> # " + content + " " + targets;
+                "> # " + content + " " + targets + suffix;
         } else {
             message.content = "> # " + content;
         }
