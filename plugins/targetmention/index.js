@@ -14,7 +14,6 @@
 
         const content = message.content;
 
-        // Lấy tất cả user ID được mention
         const mentions = [...content.matchAll(/<@!?(\d+)>/g)];
 
         if (mentions.length > 0) {
@@ -28,10 +27,10 @@
                 .join(" ");
 
             message.content =
-                "> # " + targets + " " + content + " 😂";
+                "> # " + targets + " " + content;
         } else {
             message.content =
-                "> # " + content + " 😂";
+                "> # " + content;
         }
     });
 })();
