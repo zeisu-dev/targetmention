@@ -14,21 +14,37 @@
 
         const content = message.content;
 
-        // Nếu có mention → cập nhật target
         const mentions = [...content.matchAll(/<@!?(\d+)>/g)];
 
+        // Có mention → lưu target và bỏ mention khỏi nội dung
         if (mentions.length > 0) {
             targetUserIds = [...new Set(mentions.map(m => m[1]))];
+
+            const cleanContent = content
+                .replace(/<@!?\d+>/g, "")
+                .replace(/\s+/g, " ")
+                .trim();
+
+            if (targetUserIds.length > 0) {
+                const targets = targetUserIds
+                    .map(id => "<@" + id + ">")
+                    .join(" ");
+
+                message.content =
+                    "> # " + cleanContent + " " + targets;
+            }
+
             return;
         }
 
-        // Các tin nhắn sau: > # ở đầu, mention ở cuối
+        // Những tin nhắn sau
         if (targetUserIds.length > 0) {
             const targets = targetUserIds
                 .map(id => "<@" + id + ">")
                 .join(" ");
 
-            message.content = "> # " + content + " " + targets;
+            message.content =
+                "> # " + content + " " + targets;
         } else {
             message.content = "> # " + content;
         }
